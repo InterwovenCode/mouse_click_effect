@@ -5,7 +5,6 @@
 
 from pynput import mouse
 from plugin import *
-import win32gui
 from qfluentwidgets import (
     FluentIcon as FIF,
 )
@@ -66,7 +65,7 @@ class ClickWaterWidget(QWidget):
         return super().paintEvent(a0)
 
 class ClickEffectWindow(QWidget):
-    globalClicked = pyqtSignal(object, object, object, object)
+    globalClicked = pyqtSignal(object, object, object)
     def __init__(self):
         super().__init__()
         self.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
@@ -77,7 +76,7 @@ class ClickEffectWindow(QWidget):
         self.globalClicked.connect(self.onGlobalClicked)
         self.lastClickPos = QCursor.pos()
 
-    def onGlobalClicked(self, hwnd, pos, button, pressed):
+    def onGlobalClicked(self, pos, button, pressed):
         self.lastClickPos = pos
         if button == mouse.Button.left and pressed:
             self.clickWidget = ClickWaterWidget()
@@ -86,14 +85,8 @@ class ClickEffectWindow(QWidget):
             self.clickWidget.show()
 
     def onClick(self, x, y, button, pressed):
-        # 获取当前鼠标点击位置的窗口句柄
-        hwnd = win32gui.WindowFromPoint((x, y))
-        # # 获取窗口标题
-        # window_title = win32gui.GetWindowText(hwnd)
-        # print(f"Clicked on window: {window_title}")
-
         currentPosition = QPoint(x / self.devicePixelRatioF(), y / self.devicePixelRatioF())
-        self.globalClicked.emit(hwnd, currentPosition, button, pressed)
+        self.globalClicked.emit(currentPosition, button, pressed)
 
     def showEvent(self, a0):
         self.mouseHook = mouse.Listener(on_click=self.onClick)
@@ -145,9 +138,6 @@ class MouseClickEffect(PluginInterface):
     def tags(self) -> list:
         return ["click","effect"]
 
-    @property
-    def supportSystems(self) -> list:
-        return ["win32"]
 
     def onChangeEnabled(self):
         if self.enable:
