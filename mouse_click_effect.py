@@ -5,7 +5,6 @@
 
 from pynput import mouse
 from plugin import *
-from PyQt5.QtQml import QQmlApplicationEngine
 import win32gui
 from qfluentwidgets import (
     FluentIcon as FIF,
@@ -145,6 +144,10 @@ class MouseClickEffect(PluginInterface):
     @property
     def tags(self) -> list:
         return ["click","effect"]
+
+    @property
+    def supportSystems(self) -> list:
+        return ["win32"]
 
     def onChangeEnabled(self):
         if self.enable:
