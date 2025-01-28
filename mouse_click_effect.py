@@ -3,8 +3,9 @@
 #   - [实现水波纹显示效果（by 豪）](https://codebus.cn/contributor/hao-water-ripple-effect)
 #   - [利用C/C++实现的水波纹特效](https://blog.csdn.net/qq_63303370/article/details/132794536)
 
-from pynput import mouse
 from plugin import *
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "site-packages"))
+from pynput import mouse
 from qfluentwidgets import (
     FluentIcon as FIF,
 )
